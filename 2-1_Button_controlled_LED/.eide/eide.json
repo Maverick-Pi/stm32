@@ -4,7 +4,9 @@
   "dependenceList": [],
   "srcDirs": [
     "src",
-    "lib"
+    "lib",
+    "hardware",
+    "system"
   ],
   "virtualFolder": {
     "name": "<virtual_root>",
@@ -88,7 +90,11 @@
           "lib/start",
           "lib/STM32F10x_StdPeriph_Driver",
           "lib/STM32F10x_StdPeriph_Driver/inc",
-          "lib/STM32F10x_StdPeriph_Driver/src"
+          "lib/STM32F10x_StdPeriph_Driver/src",
+          "hardware/inc",
+          "hardware/src",
+          "system/inc",
+          "system/src"
         ],
         "libList": [],
         "defineList": [
