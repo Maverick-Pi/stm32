@@ -108,3 +108,59 @@ uint8_t Hard_SPI_TransferByte(uint8_t data)
 
     return SPI_I2S_ReceiveData(SPI1);
 }
+
+/**
+ * @brief Transfer multiple bytes continuously over SPI (optimized)
+ * @param pTxData: Pointer to transmit data buffer
+ * @param pRxData: Pointer to receive data buffer
+ * @param size: Number of bytes to transfer
+ * 
+ * This function implements true continuous SPI transfer by:
+ * 1. Starting transmission of the first byte
+ * 2. Using a pipeline approach where we send byte N while receiving byte N-1
+ * 3. This reduces the idle time between bytes and provides true continuous transfer
+ */
+void Hard_SPI_TransferContinuous(uint8_t *pTxData, uint8_t *pRxData, uint16_t size)
+{
+    uint16_t i = 0;
+    
+    if (size == 0) return;
+    
+    /* Send first byte */
+    if (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) != RESET)
+    {
+        SPI_I2S_SendData(SPI1, pTxData[i]);
+    }
+    i++;
+    
+    /* Continuous transfer for remaining bytes */
+    for (; i < size; i++)
+    {
+        /* Wait for TXE and send next byte */
+        while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
+        SPI_I2S_SendData(SPI1, pTxData[i]);
+        
+        /* Wait for RXNE and receive previous byte */
+        while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+        if (pRxData != 0)
+        {
+            pRxData[i-1] = SPI_I2S_ReceiveData(SPI1);
+        }
+        else
+        {
+            /* Discard received data if no buffer provided */
+            SPI_I2S_ReceiveData(SPI1);
+        }
+    }
+    
+    /* Receive the last byte */
+    while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+    if (pRxData != 0)
+    {
+        pRxData[size-1] = SPI_I2S_ReceiveData(SPI1);
+    }
+    else
+    {
+        SPI_I2S_ReceiveData(SPI1);
+    }
+}

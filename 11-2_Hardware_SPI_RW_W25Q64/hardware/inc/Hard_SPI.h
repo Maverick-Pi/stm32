@@ -10,7 +10,6 @@
 #define __HARD_SPI_H__
 
 #include "stm32f10x.h"
-#include <stddef.h>
 
 /* SPI1 Pin Definitions */
 #define SPI1_CS_PIN     GPIO_Pin_4   // PA4 - Chip Select
@@ -22,5 +21,6 @@ void Hard_SPI_Init(void);
 void Hard_SPI_Start(void);
 void Hard_SPI_Stop(void);
 uint8_t Hard_SPI_TransferByte(uint8_t data);
+void Hard_SPI_TransferContinuous(uint8_t *pTxData, uint8_t *pRxData, uint16_t size);
 
 #endif // !__HARD_SPI_H__
