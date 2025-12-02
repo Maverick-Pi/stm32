@@ -1,6 +1,6 @@
 /****************************************************************************/ /**
  * @file   main.c
- * @brief  
+ * @brief  Modify the main clock frequency and display it on OLED.
  * 
  * @author Maverick Pi
  * @date   2025-12-02 15:56:11
