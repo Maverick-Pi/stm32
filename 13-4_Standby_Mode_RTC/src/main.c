@@ -24,7 +24,7 @@ int main(void)
 
     PWR_WakeUpPinCmd(ENABLE);
 
-    uint32_t alarm = RTC_GetCounter() + 10;
+    uint32_t alarm = RTC_GetCounter() + 30;
     RTC_SetAlarm(alarm);
     OLED_ShowNum(2, 6, alarm, 10);
 
@@ -33,14 +33,12 @@ int main(void)
         OLED_ShowNum(3, 6, RTC_GetFlagStatus(RTC_FLAG_ALR), 1);
 
         OLED_ShowString(4, 1, "Running");
-        Delay_ms(100);
+        Delay_ms(3000);
         OLED_ShowString(4, 1, "        ");
-        Delay_ms(100);
+        Delay_ms(500);
 
         OLED_ShowString(4, 9, "Standby");
-        Delay_ms(100);
-        OLED_ShowString(4, 9, "       ");
-        Delay_ms(100);
+        Delay_ms(2000);
 
         OLED_Clear();
 
