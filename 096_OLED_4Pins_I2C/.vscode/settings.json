@@ -1,0 +1,12 @@
+{
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.autoIndent": "advanced",
+    "python-envs.pythonProjects": [
+        {
+            "path": "",
+            "envManager": "ms-python.python:conda",
+            "packageManager": "ms-python.python:conda"
+        }
+    ]
+}
