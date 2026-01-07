@@ -13,24 +13,22 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <math.h>
 #include "OLED_Font.h"
 #include "I2C_Hardware.h"
 #include "Delay.h"
 #include "W25Q64.h"
 #include "CH_Font_Index.h"
 
-// 0.96寸 OLED 显示屏分辨率
-#define OLED_MAX_COLUMN         128
-#define OLED_MAX_PAGE           8
 
-// OLED 内置 SSD1306 芯片命令
+/* OLED 内置 SSD1306 芯片命令 */
 #define OLED_SSD1306_ADDRESS                        0x78
 #define OLED_SSD1306_CONTROL_CMD                    0x00
 #define OLED_SSD1306_CONTROL_DATA                   0x40
 #define OLED_SSD1306_CONTINUATION_CMD               0x80
 #define OLED_SSD1306_CONTINUATION_DATA              0xC0
-
-// Command
 #define OLED_SSD1306_DISPLAY_OFF                    0xAE
 #define OLED_SSD1306_DISPLAY_ON                     0xAF
 #define OLED_SSD1306_CLK_DIV_OSC_FREQ               0xD5
@@ -63,18 +61,50 @@
 #define OLED_SSD1306_COLUMN_ADDR                    0x21
 #define OLED_SSD1306_PAGE_ADDR                      0x22
 
-// ASCII 字符大小 (以宽为基准)
-#define FONT_SIZE_6                     6
-#define FONT_SIZE_8                     8
+
+/* 0.96寸 OLED 显示屏分辨率 */
+#define OLED_MAX_COLUMN         128
+#define OLED_MAX_PAGE           8
+
+/* ASCII 字符大小 (以宽为基准) */
+#define FONT_SIZE_6             6
+#define FONT_SIZE_8             8
 
 
+/*********************************** 函数声明 ***********************************/
+
+/* 初始化函数 */
 void OLED_Init(void);
+
+/* 显存控制函数 */
 void OLED_Clear(void);
-void OLED_ShowChar(uint8_t col, uint8_t page, char c, uint8_t fontSize);
-void OLED_ShowString(uint8_t col, uint8_t page, char* str, uint8_t fontSize);
-void OLED_Printf(char *format, ...);
-void OLED_ShowImage(uint8_t col, uint8_t page, uint8_t width, uint8_t height, const uint8_t *image);
-void OLED_ShowChineseChar(uint8_t col, uint8_t page, const char *ch);
-void OLED_ShowMixedString(uint8_t col, uint8_t page, const char *str);
+void OLED_ClearArea(int16_t col, int16_t row, uint8_t width, uint8_t height);
+void OLED_Reverse(void);
+void OLED_ReverseArea(int16_t col, int16_t row, uint8_t width, uint8_t height);
+
+/* 更新函数 */
+void OLED_Update(void);
+
+/* 显示函数 */
+void OLED_ShowChar(int16_t col, int16_t row, char c, uint8_t fontSize);
+void OLED_ShowChineseChar(int16_t col, int16_t row, const char *ch);
+void OLED_ShowString(int16_t col, int16_t row, uint8_t fontSize, const char* str);
+void OLED_ShowNum(int16_t col, int16_t row, uint32_t num, uint8_t fontSize);
+void OLED_ShowSignedNum(int16_t col, int16_t row, int32_t num, uint8_t fontSize);
+void OLED_ShowHexNum(int16_t col, int16_t row, uint32_t num, uint8_t fontSize);
+void OLED_ShowBinNum(int16_t col, int16_t row, uint32_t num, uint8_t len, uint8_t fontSize);
+void OLED_ShowFloatNum(int16_t col, int16_t row, double num, uint8_t fracLen, uint8_t fontSize);
+void OLED_ShowImage(int16_t col, int16_t row, uint8_t width, uint8_t height, const uint8_t *image, bool clear);
+void OLED_Printf(int16_t col, int16_t row, uint8_t fontSize, char *format, ...);
+
+/* 绘图函数 */
+void OLED_DrawPoint(int16_t x, int16_t y);
+bool OLED_GetPoint(int16_t x, int16_t y);
+void OLED_DrawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+void OLED_DrawRectangle(int16_t x, int16_t y, uint8_t width, uint8_t height, bool filled);
+void OLED_DrawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, bool filled);
+void OLED_DrawCircle(int16_t cx, int16_t cy, uint8_t r, bool filled);
+void OLED_DrawEllipse(int16_t x, int16_t y, uint8_t a, uint8_t b, bool filled);
+void OLED_DrawArc(int16_t x, int16_t y, uint8_t radius, int16_t startAngle, int16_t endAngle, bool filled);
 
 #endif // !__OLED_H__

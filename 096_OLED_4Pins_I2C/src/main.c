@@ -7,8 +7,6 @@
  ********************************************************************************/
 
 #include "stm32f10x.h"
-#include "Serial.h"
-#include "I2C_Hardware.h"
 #include "OLED.h"
 
 int main(void)
@@ -17,7 +15,8 @@ int main(void)
 
     OLED_Clear();
 
-    OLED_ShowMixedString(0, 0, "黎子瑶，瑶瑶，I love you. 中英文混杂显示。");
+    OLED_ShowMixedString(0, 0, "牛逼");
+    OLED_ShowChineseChar(17, 3, "牛");
 
     while (1) {}
 }
