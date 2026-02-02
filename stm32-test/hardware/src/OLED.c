@@ -487,7 +487,7 @@ void OLED_ShowString(int16_t col, int16_t row, uint8_t fontSize, const char *str
                 }
                 
                 // 边界检查：是否超出屏幕高度
-                if (row / 8 > OLED_MAX_PAGE - 1) {
+                if (row / 8 >= OLED_MAX_PAGE - 1) {
                     break;  // 超出屏幕，停止显示
                 }
                 
@@ -505,7 +505,7 @@ void OLED_ShowString(int16_t col, int16_t row, uint8_t fontSize, const char *str
             }
             
             // 边界检查：是否超出屏幕高度
-            if (row / 8 > OLED_MAX_PAGE - 1) {
+            if (row / 8 >= OLED_MAX_PAGE - 1) {
                 break;  // 超出屏幕，停止显示
             }
             
