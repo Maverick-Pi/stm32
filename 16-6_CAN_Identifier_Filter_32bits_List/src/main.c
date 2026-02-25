@@ -1,10 +1,9 @@
 /****************************************************************************/ /**
  * @file   main.c
- * @brief  CAN 通信主程序
- *        初始化 OLED 显示屏、按键和 CAN 硬件，进入主循环检测按键输入和 CAN 数据接收
+ * @brief  CAN 标识符过滤器 32 位列表模式
  * 
  * @author Maverick Pi
- * @date   2026-02-04 00:34:07
+ * @date   2026-02-25 11:00:32
  ********************************************************************************/
 
 #include "stm32f10x.h"
@@ -17,29 +16,47 @@ uint8_t KeyNum = 0;     // 按键键值变量
 /* CAN 发送报文数组，包含标准帧和扩展帧的示例数据 */
 CanTxMsg TxMsg[] = {
     {
-        .StdId = 0x111,
+        .StdId = 0x123,
         .IDE   = CAN_Id_Standard,
         .RTR   = CAN_RTR_Data,
         .DLC   = 4,
         .Data  = { 0x11, 0x22, 0x33, 0x44 }
-     },
-     {
+    },
+    {
+        .StdId = 0x234,
+        .IDE   = CAN_Id_Standard,
+        .RTR   = CAN_RTR_Data,
+        .DLC   = 4,
+        .Data  = { 0x11, 0x22, 0x33, 0x44 }
+    },
+    {
+        .StdId = 0x345,
+        .IDE   = CAN_Id_Standard,
+        .RTR   = CAN_RTR_Data,
+        .DLC   = 4,
+        .Data  = { 0x11, 0x22, 0x33, 0x44 }
+    },
+    {
+        .StdId = 0x456,
+        .IDE   = CAN_Id_Standard,
+        .RTR   = CAN_RTR_Data,
+        .DLC   = 4,
+        .Data  = { 0x11, 0x22, 0x33, 0x44 }
+    },
+    {
         .ExtId = 0x12345678,
-        .IDE = CAN_Id_Extended,
-        .RTR = CAN_RTR_Data,
-        .DLC = 4,
-        .Data = { 0xAA, 0xBB, 0xCC, 0xDD }
-     },
-     {
-        .StdId = 0x222,
-        .IDE = CAN_Id_Standard,
-        .RTR = CAN_RTR_Remote
-     },
-     {
+        .IDE   = CAN_Id_Extended,
+        .RTR   = CAN_RTR_Data,
+        .DLC   = 4,
+        .Data  = { 0x11, 0x22, 0x33, 0x44 }
+    },
+    {
         .ExtId = 0x0789ABCD,
-        .IDE = CAN_Id_Extended,
-        .RTR = CAN_RTR_Remote
-     }
+        .IDE   = CAN_Id_Extended,
+        .RTR   = CAN_RTR_Data,
+        .DLC   = 4,
+        .Data  = { 0x11, 0x22, 0x33, 0x44 }
+    },
 };
 
 /* 发送报文索引变量 */
